@@ -60,8 +60,8 @@ vec3 color(const ray &r, hitable *world, int depth) {
 }
 
 int main() {
-    int nx = 200;
-    int ny = 100;
+    int nx = 800;
+    int ny = 600;
     int ns = 100;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
@@ -78,7 +78,7 @@ int main() {
     vec3 lookfrom(2, 2, 5);
     vec3 lookat(0, 0, -1);
     float dist_to_focus = (lookfrom - lookat).length();
-    float aperature = 12.0;
+    float aperature = 0.25;
 
     camera cam(lookfrom, lookat, vec3(0, 1, 0), 80, float(nx) / float(ny), aperature, dist_to_focus);
 
