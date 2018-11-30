@@ -30,7 +30,8 @@ public:
         if (dot(ray_in.direction(), rec.normal) > 0) {
             outward_normal = -rec.normal;
             ni_over_nt = ref_idx;
-            cosine = ref_idx * dot(ray_in.direction(), rec.normal) / ray_in.direction().length();
+            cosine = dot(ray_in.direction(), rec.normal) / ray_in.direction().length();
+            cosine = sqrt(1 - ref_idx * ref_idx * (1 - cosine * cosine));
         } else {
             outward_normal = rec.normal;
             ni_over_nt = 1.0f / ref_idx;

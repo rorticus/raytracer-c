@@ -60,18 +60,11 @@ vec3 color(const ray &r, hitable *world, int depth) {
 }
 
 int main() {
-    int nx = 800;
-    int ny = 600;
+    int nx = 200;
+    int ny = 200;
     int ns = 100;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
-
-    hitable *list[4];
-
-    list[0] = new sphere(vec3(0, 0, -1), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
-    list[1] = new sphere(vec3(0, -100.5f, -1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
-    list[2] = new sphere(vec3(1, 0, -1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
-    list[3] = new sphere(vec3(-1, 0, -1), 0.5, new dielectric(1.5));
 
     hitable *world = random_scene();
 
