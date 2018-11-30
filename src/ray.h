@@ -12,9 +12,10 @@ class ray {
 public:
     ray() = default;
 
-    ray(const vec3 &a, const vec3 &b) {
+    ray(const vec3 &a, const vec3 &b, float ti = 0.0f) {
         A = a;
         B = b;
+        t = ti;
     }
 
     vec3 origin() const { return A; }
@@ -23,8 +24,11 @@ public:
 
     vec3 pointAtParameter(float t) const { return A + t * B; }
 
+    float time() const { return t; }
+
     vec3 A;
     vec3 B;
+    float t;
 };
 
 

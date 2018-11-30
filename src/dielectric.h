@@ -40,14 +40,14 @@ public:
         if (refract(ray_in.direction(), outward_normal, ni_over_nt, refracted)) {
             reflect_prob = schlick(cosine, ref_idx);
         } else {
-            scattered = ray(rec.p, reflected);
+            scattered = ray(rec.p, reflected, ray_in.time());
             reflect_prob = 1.0;
         }
 
         if (drand48() < reflect_prob) {
-            scattered = ray(rec.p, reflected);
+            scattered = ray(rec.p, reflected, ray_in.time());
         } else {
-            scattered = ray(rec.p, refracted);
+            scattered = ray(rec.p, refracted, ray_in.time());
         }
 
         return true;
