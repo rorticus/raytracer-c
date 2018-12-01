@@ -19,27 +19,27 @@ public:
         e[2] = e2;
     }
 
-    inline float x() {
+    inline float x() const {
         return e[0];
     }
 
-    inline float y() {
+    inline float y() const {
         return e[1];
     }
 
-    inline float z() {
+    inline float z() const {
         return e[2];
     }
 
-    inline float r() {
+    inline float r() const {
         return e[0];
     }
 
-    inline float g() {
+    inline float g() const {
         return e[1];
     }
 
-    inline float b() {
+    inline float b() const {
         return e[2];
     }
 

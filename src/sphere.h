@@ -16,6 +16,8 @@ public:
 
     bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const override;
 
+    bool bounding_box(float t0, float t1, aabb &box) const override;
+
     vec3 center;
     float radius{};
     material *m;
@@ -64,6 +66,11 @@ bool sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec) const 
     return false;
 }
 
+bool sphere::bounding_box(float t0, float t1, aabb &box) const {
+    box = aabb(center - vec3(radius, radius, radius), center + vec3(radius, radius, radius));
+    return true;
+}
+
 class moving_sphere : public hitable {
 public:
     moving_sphere() {}
@@ -71,7 +78,11 @@ public:
     moving_sphere(vec3 cen0, vec3 cen1, float r, float t0, float t1, material *mat) : center0(cen0), center1(cen1),
                                                                                       radius(r), time0(t0), time1(t1),
                                                                                       m(mat) {};
+
     bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const override;
+
+    bool bounding_box(float t0, float t1, aabb &box) const override;
+
     vec3 center(float t) const;
 
     vec3 center0, center1;
@@ -111,6 +122,15 @@ bool moving_sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec)
     }
 
     return false;
+}
+
+bool moving_sphere::bounding_box(float t0, float t1, aabb &box) const {
+    box = surrounding_box(
+            aabb(center(t0) - vec3(radius, radius, radius), center(t0) + vec3(radius, radius, radius)),
+            aabb(center(t1) - vec3(radius, radius, radius), center(t1) + vec3(radius, radius, radius))
+    );
+
+    return true;
 }
 
 #endif //RAYTRACER_SPHERE_H

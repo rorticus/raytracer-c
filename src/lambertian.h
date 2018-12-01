@@ -7,19 +7,20 @@
 
 
 #include "material.h"
+#include "texture.h"
 
 class lambertian : public material {
 public:
-    explicit lambertian(const vec3 &a) : albedo(a) {}
+    explicit lambertian(texture *a) : albedo(a) {}
 
     bool scatter(const ray &ray_in, const hit_record &rec, vec3 &attenuation, ray &scattered) const override {
         vec3 target = rec.p + rec.normal + random_in_unit_sphere();
         scattered = ray(rec.p, target - rec.p, ray_in.time());
-        attenuation = albedo;
+        attenuation = albedo->value(0, 0, rec.p);
         return true;
     }
 
-    vec3 albedo;
+    texture *albedo;
 };
 
 
