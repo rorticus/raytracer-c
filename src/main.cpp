@@ -9,6 +9,7 @@
 #include "lambertian.h"
 #include "metal.h"
 #include "dielectric.h"
+#include "bvh_node.h"
 
 hitable *random_scene() {
     int n = 500;
@@ -17,7 +18,7 @@ hitable *random_scene() {
             new constant_texture(vec3(0.2, 0.3, 0.1)),
             new constant_texture(vec3(0.8, 0.8, 0.8))
     );
-    texture *noise = new noise_texture();
+    texture *noise = new noise_texture(3);
     list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, new lambertian(noise));
     int i = 1;
     for (int a = -11; a < 11; a++) {
@@ -45,7 +46,9 @@ hitable *random_scene() {
     list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(new constant_texture(vec3(0.5, 0.2, 0.1))));
     list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5), 0.0));
 
-    return new hitable_list(list, i);
+    bvh_node *bnode = new bvh_node(list, i, 0.0f, 1.0f);
+
+    return bnode;
 }
 
 vec3 color(const ray &r, hitable *world, int depth) {
