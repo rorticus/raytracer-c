@@ -17,7 +17,8 @@ hitable *random_scene() {
             new constant_texture(vec3(0.2, 0.3, 0.1)),
             new constant_texture(vec3(0.8, 0.8, 0.8))
     );
-    list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, new lambertian(checker));
+    texture *noise = new noise_texture();
+    list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, new lambertian(noise));
     int i = 1;
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
