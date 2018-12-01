@@ -10,16 +10,16 @@
 
 class sphere : public hitable {
 public:
-    sphere() = default;
+    sphere() {};
 
     sphere(vec3 cen, float r, material *mat) : center(cen), radius(r), m(mat) {};
 
-    bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const override;
+    bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const;
 
-    bool bounding_box(float t0, float t1, aabb &box) const override;
+    bool bounding_box(float t0, float t1, aabb &box) const;
 
     vec3 center;
-    float radius{};
+    float radius;
     material *m;
 };
 
@@ -79,9 +79,9 @@ public:
                                                                                       radius(r), time0(t0), time1(t1),
                                                                                       m(mat) {};
 
-    bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const override;
+    bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const;
 
-    bool bounding_box(float t0, float t1, aabb &box) const override;
+    bool bounding_box(float t0, float t1, aabb &box) const;
 
     vec3 center(float t) const;
 

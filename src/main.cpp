@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include "vec3.h"
 #include "ray.h"
 #include "hitable.h"
@@ -60,7 +61,7 @@ vec3 color(const ray &r, hitable *world, int depth) {
         if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
             return attenuation * color(scattered, world, depth + 1);
         } else {
-            return {0, 0, 0};
+            return vec3(0, 0, 0);
         }
     } else {
         vec3 unit = unit_vector(r.direction());
@@ -70,8 +71,8 @@ vec3 color(const ray &r, hitable *world, int depth) {
 }
 
 int main() {
-    int nx = 200;
-    int ny = 200;
+    int nx = 800;
+    int ny = 600;
     int ns = 100;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
@@ -81,11 +82,12 @@ int main() {
     vec3 lookfrom(13, 2, 3);
     vec3 lookat(0, 0, 0);
     float dist_to_focus = 10.0;
-    float aperature = 0;
+    float aperature = 0.25;
 
     camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(nx) / float(ny), aperature, dist_to_focus, 0, 1);
 
     for (int j = ny - 1; j >= 0; j--) {
+fprintf(stderr, "%d / %d\n", ny - j, ny);
         for (int i = 0; i < nx; i++) {
             vec3 col = vec3(0, 0, 0);
 
@@ -111,3 +113,4 @@ int main() {
 
     return 0;
 }
+

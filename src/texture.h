@@ -20,7 +20,7 @@ public:
 
     constant_texture(vec3 c) : color(c) {}
 
-    vec3 value(float u, float v, const vec3 &p) const override {
+    vec3 value(float u, float v, const vec3 &p) const {
         return color;
     }
 
@@ -33,7 +33,7 @@ public:
 
     checker_texture(texture *t0, texture *t1) : even(t0), odd(t1) {}
 
-    vec3 value(float u, float v, const vec3 &p) const override {
+    vec3 value(float u, float v, const vec3 &p) const {
         float sines = sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
         if (sines < 0) {
             return odd->value(u, v, p);
@@ -51,7 +51,7 @@ public:
     noise_texture() {}
     noise_texture(float sc) : scale(sc) {}
 
-    vec3 value(float u, float v, const vec3 &p) const override {
+    vec3 value(float u, float v, const vec3 &p) const {
 //        return vec3(1, 1, 1) * noise.noise(scale * p);
         return vec3(1, 1, 1) * 0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
     }

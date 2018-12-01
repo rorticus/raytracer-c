@@ -10,7 +10,7 @@
 
 class ray {
 public:
-    ray() = default;
+    ray() {};
 
     ray(const vec3 &a, const vec3 &b, float ti = 0.0f) {
         A = a;

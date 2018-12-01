@@ -43,7 +43,7 @@ public:
         vec3 offset = u * rd.x() + v * rd.y();
         float time = time0 + (float) drand48() * (time1 - time0);
 
-        return {origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time};
+        return ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset, time);
     }
 
     vec3 origin;
