@@ -10,16 +10,16 @@
 
 class sphere : public hitable {
 public:
-    sphere() = default;
+    sphere() {};
 
     sphere(vec3 cen, float r, material *mat) : center(cen), radius(r), m(mat) {};
 
     bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1) const;
 
-    bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const override;
+    bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const;
 
     vec3 center;
-    float radius{};
+    float radius;
     material *m;
 };
 

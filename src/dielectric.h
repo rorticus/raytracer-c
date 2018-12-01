@@ -18,7 +18,7 @@ class dielectric : public material {
 public:
     explicit dielectric(float ri) : ref_idx(ri) {}
 
-    bool scatter(const ray &ray_in, const hit_record &rec, vec3 &attenuation, ray &scattered) const override {
+    bool scatter(const ray &ray_in, const hit_record &rec, vec3 &attenuation, ray &scattered) const {
         vec3 outward_normal;
         vec3 reflected = reflect(ray_in.direction(), rec.normal);
         float ni_over_nt;
@@ -51,7 +51,7 @@ public:
         }
 
         return true;
-    }
+    };
 
     float ref_idx;
 };
