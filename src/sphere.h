@@ -8,6 +8,14 @@
 
 #include "hitable.h"
 
+void get_sphere_uv(const vec3 p, float &u, float &v) {
+    float phi = atan2(p.z(), p.x());
+    float theta = asin(p.y());
+
+    u = 1 - (phi + M_PI) / (2 * M_PI);
+    v = (theta + M_PI / 2) / M_PI;
+}
+
 class sphere : public hitable {
 public:
     sphere() {};
@@ -60,6 +68,7 @@ bool sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec) const 
         rec.p = r.pointAtParameter(t0);
         rec.normal = unit_vector(rec.p - center);
         rec.mat_ptr = m;
+        get_sphere_uv(rec.normal, rec.u, rec.v);
         return true;
     }
 
@@ -118,6 +127,7 @@ bool moving_sphere::hit(const ray &r, float t_min, float t_max, hit_record &rec)
         rec.p = r.pointAtParameter(t0);
         rec.normal = unit_vector(rec.p - cent);
         rec.mat_ptr = m;
+        get_sphere_uv((rec.p - cent) / radius, rec.u, rec.v);
         return true;
     }
 

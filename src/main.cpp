@@ -11,16 +11,20 @@
 #include "metal.h"
 #include "dielectric.h"
 #include "bvh_node.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 hitable *random_scene() {
     int n = 500;
     hitable **list = new hitable *[n + 1];
-    texture *checker = new checker_texture(
-            new constant_texture(vec3(0.2, 0.3, 0.1)),
-            new constant_texture(vec3(0.8, 0.8, 0.8))
-    );
     texture *noise = new noise_texture(3);
-    list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, new lambertian(noise));
+
+    int nx, ny, nn;
+    unsigned char *texture_data = stbi_load("../assets/2k_venus_surface.jpg", &nx, &ny, &nn, 0);
+    material *tex = new lambertian(new image_texture(texture_data, nx, ny));
+
+    list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, tex);
+
     int i = 1;
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
@@ -71,8 +75,8 @@ vec3 color(const ray &r, hitable *world, int depth) {
 }
 
 int main() {
-    int nx = 800;
-    int ny = 600;
+    int nx = 250;
+    int ny = 250;
     int ns = 100;
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
@@ -87,7 +91,7 @@ int main() {
     camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(nx) / float(ny), aperature, dist_to_focus, 0, 1);
 
     for (int j = ny - 1; j >= 0; j--) {
-fprintf(stderr, "%d / %d\n", ny - j, ny);
+        fprintf(stderr, "%d / %d\n", ny - j, ny);
         for (int i = 0; i < nx; i++) {
             vec3 col = vec3(0, 0, 0);
 
