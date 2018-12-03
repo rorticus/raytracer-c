@@ -23,7 +23,7 @@ hitable *random_scene() {
     unsigned char *texture_data = stbi_load("../assets/2k_venus_surface.jpg", &nx, &ny, &nn, 0);
     material *tex = new lambertian(new image_texture(texture_data, nx, ny));
 
-    list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, tex);
+    list[0] = new sphere(vec3(0, -1000.0f, 0), 1000, new lambertian(noise));
 
     int i = 1;
     for (int a = -11; a < 11; a++) {
@@ -48,8 +48,8 @@ hitable *random_scene() {
     }
 
     list[i++] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
-    list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new lambertian(new constant_texture(vec3(0.5, 0.2, 0.1))));
-    list[i++] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5), 0.0));
+    list[i++] = new sphere(vec3(-4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5), 0.0));
+    list[i++] = new sphere(vec3(4, 1, 0), 1.0, tex);
 
     bvh_node *bnode = new bvh_node(list, i, 0.0f, 1.0f);
 

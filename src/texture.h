@@ -91,7 +91,7 @@ vec3 image_texture::value(float u, float v, const vec3 &p) const {
 
     float r = int(data[3 * i + 3 * nx * j]) / 255.0f;
     float g = int(data[3 * i + 3 * nx * j + 1]) / 255.0f;
-    float b = int(data[3 * i + 3 * nx * j] + 2) / 255.0f;
+    float b = int(data[3 * i + 3 * nx * j + 2]) / 255.0f;
 
     return vec3(r, g, b);
 }
