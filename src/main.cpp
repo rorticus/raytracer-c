@@ -11,8 +11,15 @@
 #include "metal.h"
 #include "dielectric.h"
 #include "bvh_node.h"
+
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "stb_image.h"
+#include "diffuse_light.h"
+#include "xy_rect.h"
+#include "yz_rect.h"
+#include "xz_rect.h"
+#include "flip_normals.h"
 
 hitable *random_scene() {
     int n = 500;
@@ -56,21 +63,38 @@ hitable *random_scene() {
     return bnode;
 }
 
+hitable *simple_light() {
+    hitable **list = new hitable*[8];
+    int i = 0;
+    material *red = new lambertian( new constant_texture(vec3(0.65, 0.05, 0.05)) );
+    material *white = new lambertian( new constant_texture(vec3(0.73, 0.73, 0.73)) );
+    material *green = new lambertian( new constant_texture(vec3(0.12, 0.45, 0.15)) );
+    material *light = new diffuse_light( new constant_texture(vec3(15, 15, 15)) );
+    list[i++] = new flip_normals(new yz_rect(0, 555, 0, 555, 555, green));
+    list[i++] = new yz_rect(0, 555, 0, 555, 0, red);
+    list[i++] = new xz_rect(213, 343, 227, 332, 554, light);
+//    list[i++] = new flip_normals(new xz_rect(0, 555, 0, 555, 555, white));
+//    list[i++] = new xz_rect(0, 555, 0, 555, 0, white);
+//    list[i++] = new flip_normals(new xy_rect(0, 555, 0, 555, 555, white));
+
+    return new hitable_list(list, i);
+}
+
 vec3 color(const ray &r, hitable *world, int depth) {
     hit_record rec;
 
     if (world->hit(r, 0.001, MAXFLOAT, rec)) {
         ray scattered;
         vec3 attenuation;
+        vec3 emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+
         if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
-            return attenuation * color(scattered, world, depth + 1);
+            return emitted + attenuation * color(scattered, world, depth + 1);
         } else {
-            return vec3(0, 0, 0);
+            return emitted;
         }
     } else {
-        vec3 unit = unit_vector(r.direction());
-        float t = 0.5f * (unit.y() + 1.0f);
-        return (1.0 - t) * vec3(1.0f, 1.0f, 1.0f) + t * vec3(0.5f, 0.7f, 1.0f);
+        return vec3(0, 0, 0);
     }
 }
 
@@ -81,14 +105,15 @@ int main() {
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    hitable *world = random_scene();
+    hitable *world = simple_light();
 
-    vec3 lookfrom(13, 2, 3);
-    vec3 lookat(0, 0, 0);
+    vec3 lookfrom(278, 278, -800);
+    vec3 lookat(278, 278, 0);
     float dist_to_focus = 10.0;
-    float aperature = 0.25;
+    float aperature = 0;
+    float vfov = 40;
 
-    camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(nx) / float(ny), aperature, dist_to_focus, 0, 1);
+    camera cam(lookfrom, lookat, vec3(0, 1, 0), vfov, float(nx) / float(ny), aperature, dist_to_focus, 0, 1);
 
     for (int j = ny - 1; j >= 0; j--) {
         fprintf(stderr, "%d / %d\n", ny - j, ny);
