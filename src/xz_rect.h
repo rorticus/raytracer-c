@@ -12,7 +12,7 @@ class xz_rect : public hitable {
 public:
     xz_rect() {}
 
-    xz_rect(float _x0, float _x1, float _z0, float z1, float _k, material *_mat) : x0(_x0), x1(_x1), z0(_z0), z1(z1),
+    xz_rect(float _x0, float _x1, float _z0, float _z1, float _k, material *_mat) : x0(_x0), x1(_x1), z0(_z0), z1(_z1), k(_k),
                                                                                    mat(_mat) {}
 
     virtual bool hit(const ray &r, float t0, float t1, hit_record &rec) const;

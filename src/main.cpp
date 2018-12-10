@@ -11,6 +11,7 @@
 #include "metal.h"
 #include "dielectric.h"
 #include "bvh_node.h"
+#include <fstream>
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -63,7 +64,7 @@ hitable *random_scene() {
     return bnode;
 }
 
-hitable *simple_light() {
+hitable *cornell_box() {
     hitable **list = new hitable*[8];
     int i = 0;
     material *red = new lambertian( new constant_texture(vec3(0.65, 0.05, 0.05)) );
@@ -73,9 +74,9 @@ hitable *simple_light() {
     list[i++] = new flip_normals(new yz_rect(0, 555, 0, 555, 555, green));
     list[i++] = new yz_rect(0, 555, 0, 555, 0, red);
     list[i++] = new xz_rect(213, 343, 227, 332, 554, light);
-//    list[i++] = new flip_normals(new xz_rect(0, 555, 0, 555, 555, white));
-//    list[i++] = new xz_rect(0, 555, 0, 555, 0, white);
-//    list[i++] = new flip_normals(new xy_rect(0, 555, 0, 555, 555, white));
+    list[i++] = new flip_normals(new xz_rect(0, 555, 0, 555, 555, white));
+    list[i++] = new xz_rect(0, 555, 0, 555, 0, white);
+    list[i++] = new flip_normals(new xy_rect(0, 555, 0, 555, 555, white));
 
     return new hitable_list(list, i);
 }
@@ -103,9 +104,12 @@ int main() {
     int ny = 250;
     int ns = 100;
 
-    std::cout << "P3\n" << nx << " " << ny << "\n255\n";
+    std::ofstream output;
+    output.open("out.ppm");
 
-    hitable *world = simple_light();
+    output << "P3\n" << nx << " " << ny << "\n255\n";
+
+    hitable *world = cornell_box();
 
     vec3 lookfrom(278, 278, -800);
     vec3 lookat(278, 278, 0);
@@ -116,7 +120,7 @@ int main() {
     camera cam(lookfrom, lookat, vec3(0, 1, 0), vfov, float(nx) / float(ny), aperature, dist_to_focus, 0, 1);
 
     for (int j = ny - 1; j >= 0; j--) {
-        fprintf(stderr, "%d / %d\n", ny - j, ny);
+        std::cout << ny - j << " / " << ny << "\n";
         for (int i = 0; i < nx; i++) {
             vec3 col = vec3(0, 0, 0);
 
@@ -136,9 +140,11 @@ int main() {
             int ig = int(255.99 * col.g());
             int ib = int(255.99 * col.b());
 
-            std::cout << ir << " " << ig << " " << ib << "\n";
+            output << ir << " " << ig << " " << ib << "\n";
         }
     }
+
+    output.close();
 
     return 0;
 }

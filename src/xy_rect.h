@@ -12,7 +12,7 @@ class xy_rect : public hitable {
 public:
     xy_rect() {}
 
-    xy_rect(float _x0, float _x1, float _y0, float _y1, float _k, material *_mat) : x0(_x0), x1(_x1), y0(_y0), y1(_y1),
+    xy_rect(float _x0, float _x1, float _y0, float _y1, float _k, material *_mat) : x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k),
                                                                                     mat(_mat) {}
 
     virtual bool hit(const ray &r, float t0, float t1, hit_record &rec) const;
