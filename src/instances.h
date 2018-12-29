@@ -7,6 +7,7 @@
 
 
 #include "hitable.h"
+#include <float.h>
 
 class translate : public hitable {
 public:
@@ -42,8 +43,8 @@ public:
         sin_theta = sin(radians);
         cos_theta = cos(radians);
         hasbox = ptr->bounding_box(0, 1, bbox);
-        vec3 min(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-        vec3 max(-MAXFLOAT, MAXFLOAT, MAXFLOAT);
+        vec3 min(FLT_MAX, FLT_MAX, FLT_MAX);
+        vec3 max(-FLT_MAX, FLT_MAX, FLT_MAX);
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {

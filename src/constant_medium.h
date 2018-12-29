@@ -9,6 +9,7 @@
 #include "hitable.h"
 #include "texture.h"
 #include "isotropic.h"
+#include <float.h>
 
 class constant_medium : public hitable {
 public:
@@ -18,8 +19,8 @@ public:
 
     virtual bool hit(const ray &r, float t_min, float t_max, hit_record &rec) const {
         hit_record rec1, rec2;
-        if (boundary->hit(r, -MAXFLOAT, MAXFLOAT, rec1)) {
-            if (boundary->hit(r, rec1.t + 0.0001, MAXFLOAT, rec2)) {
+        if (boundary->hit(r, -FLT_MAX, FLT_MAX, rec1)) {
+            if (boundary->hit(r, rec1.t + 0.0001, FLT_MAX, rec2)) {
                 if (rec1.t < t_min) {
                     rec1.t = t_min;
                 }

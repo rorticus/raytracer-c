@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <istream>
+#include <stdlib.h>
 
 class vec3 {
 public:

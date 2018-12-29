@@ -12,6 +12,7 @@
 #include "dielectric.h"
 #include "bvh_node.h"
 #include <fstream>
+#include <float.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -91,7 +92,7 @@ hitable *cornell_box() {
 vec3 color(const ray &r, hitable *world, int depth) {
     hit_record rec;
 
-    if (world->hit(r, 0.001, MAXFLOAT, rec)) {
+    if (world->hit(r, 0.001, FLT_MAX, rec)) {
         ray scattered;
         vec3 attenuation;
         vec3 emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
